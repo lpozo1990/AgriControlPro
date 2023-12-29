@@ -1,11 +1,10 @@
 import "./App.css";
+import Login from "./pages/Login";
 
 function App() {
   return (
     <>
-      <div className="text-red-800 text-2xl w-full bg-slate-300 text-center py-8 font-bold">
-        Login page
-      </div>
+      <Login />
     </>
   );
 }
