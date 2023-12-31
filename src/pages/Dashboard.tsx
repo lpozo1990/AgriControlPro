@@ -1,10 +1,12 @@
 import { FunctionComponent } from "react";
 import { Outlet } from "react-router-dom";
 import DashboardLink from "../components/DashboardLink";
+import { useModalStore } from "../store/useStore";
 
 interface DashboardProps {}
 
 const Dashboard: FunctionComponent<DashboardProps> = () => {
+  const { products } = useModalStore();
   return (
     <>
       <div className="antialiased bg-gray-50 dark:bg-gray-900">
@@ -1027,24 +1029,20 @@ const Dashboard: FunctionComponent<DashboardProps> = () => {
         <main className="p-4 md:ml-64 h-auto pt-20">
           <Outlet />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-            <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-64"></div>
-            <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
-            <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
-            <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
-          </div>
-          <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"></div>
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-            <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-            <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-            <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-          </div>
-          <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"></div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-            <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-            <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-            <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
+            {products.map((product) => (
+              <div className="border-2 p-2 flex flex-col border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-64">
+                <img
+                  src=""
+                  alt="productImage"
+                  className="size-32 border-dashed border-gray-400 border-2 pb-4"
+                />
+                <span>Nombre: {product.name}</span>
+                <span>Categoria: {product.category}</span>
+                <span>Precio: ${product.price}</span>
+                <span>Cantidad: {product.quantity}</span>
+                <span>Descripcion: {product.description}</span>
+              </div>
+            ))}
           </div>
         </main>
       </div>

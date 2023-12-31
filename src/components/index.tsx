@@ -1,17 +1,40 @@
-import { FunctionComponent } from "react";
+import { ChangeEvent, FormEvent, FunctionComponent } from "react";
+import { useModalStore } from "../store/useStore";
 
 interface IndexProps {}
 
 const Index: FunctionComponent<IndexProps> = () => {
+  const { formData, setFormData, addProduct } = useModalStore();
+
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({ [name]: value });
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const newProduct = { ...formData };
+    addProduct(newProduct);
+    setFormData({
+      name: "",
+      price: 0,
+      quantity: 0,
+      category: "",
+      description: "",
+    });
+  };
+
   return (
     <>
       <div className="flex justify-between items-center ">
         <h1 className="text-2xl">Productos</h1>
         <div className="flex justify-center m-5">
           <button
-            id="defaultModalButton"
-            data-modal-target="defaultModal"
-            data-modal-toggle="defaultModal"
+            id="productModalButton"
+            data-modal-target="productModal"
+            data-modal-toggle="productModal"
             className="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
             type="button"
           >
@@ -21,7 +44,7 @@ const Index: FunctionComponent<IndexProps> = () => {
       </div>
 
       <div
-        id="defaultModal"
+        id="productModal"
         tabIndex={-1}
         aria-hidden="true"
         className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
@@ -30,12 +53,12 @@ const Index: FunctionComponent<IndexProps> = () => {
           <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Add Product
+                Crear Producto
               </h3>
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-toggle="defaultModal"
+                data-modal-toggle="productModal"
               >
                 <svg
                   aria-hidden="true"
@@ -53,16 +76,18 @@ const Index: FunctionComponent<IndexProps> = () => {
                 <span className="sr-only">Close modal</span>
               </button>
             </div>
-            <form action="#">
+            <form onSubmit={handleSubmit} action="#">
               <div className="grid gap-4 mb-4 sm:grid-cols-2">
                 <div>
                   <label
                     htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Name
+                    Nombre
                   </label>
                   <input
+                    onChange={handleInputChange}
+                    value={formData.name}
                     type="text"
                     name="name"
                     id="name"
@@ -70,31 +95,19 @@ const Index: FunctionComponent<IndexProps> = () => {
                     placeholder="Type product name"
                   />
                 </div>
-                <div>
-                  <label
-                    htmlFor="brand"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Brand
-                  </label>
-                  <input
-                    type="text"
-                    name="brand"
-                    id="brand"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Product brand"
-                  />
-                </div>
+
                 <div>
                   <label
                     htmlFor="price"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Price
+                    Precio
                   </label>
                   <input
                     type="number"
                     name="price"
+                    value={formData.price}
+                    onChange={handleInputChange}
                     id="price"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="$2999"
@@ -102,13 +115,33 @@ const Index: FunctionComponent<IndexProps> = () => {
                 </div>
                 <div>
                   <label
+                    htmlFor="quantity"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Cantidad
+                  </label>
+                  <input
+                    onChange={handleInputChange}
+                    value={formData.quantity}
+                    type="number"
+                    name="quantity"
+                    id="quantity"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="2999"
+                  />
+                </div>
+                <div>
+                  <label
                     htmlFor="category"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Category
+                    Categoria
                   </label>
                   <select
                     id="category"
+                    name="category"
+                    onChange={handleInputChange}
+                    value={formData.category}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   >
                     <option selected={true}>Select category</option>
@@ -126,8 +159,11 @@ const Index: FunctionComponent<IndexProps> = () => {
                     Description
                   </label>
                   <textarea
+                    onChange={handleInputChange}
                     id="description"
+                    value={formData.description}
                     rows={4}
+                    name="description"
                     className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Write product description here"
                   ></textarea>
@@ -135,6 +171,7 @@ const Index: FunctionComponent<IndexProps> = () => {
               </div>
               <button
                 type="submit"
+                data-modal-toggle="productModal"
                 className="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 <svg
@@ -149,7 +186,7 @@ const Index: FunctionComponent<IndexProps> = () => {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                Add new product
+                Agregar producto
               </button>
             </form>
           </div>
