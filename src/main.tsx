@@ -5,8 +5,9 @@ import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/Login.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
-import Index from "./components/index.tsx";
+import Index from "./components/Products/index.tsx";
 import Help from "./components/Help.tsx";
+import Sales from "./components/Sales.tsx";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "help",
         element: <Help />,
+      },
+      {
+        path: "sales",
+        element: <Sales />,
       },
     ],
   },

@@ -1,16 +1,20 @@
 import { ChangeEvent, FormEvent, FunctionComponent } from "react";
-import { useModalStore } from "../store/useStore";
+import { useModalStore } from "../../store/useStore";
+import placeholder from "../../assets/placeholder-product.png";
 
 interface IndexProps {}
 
 const Index: FunctionComponent<IndexProps> = () => {
-  const { formData, setFormData, addProduct } = useModalStore();
-
+  const { formData, setFormData, addProduct, products } = useModalStore();
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value });
+
+    // Convertir quantity y price a números si son campos numéricos
+    const numericValue = /^\d+$/.test(value) ? parseInt(value, 10) : value;
+
+    setFormData({ [name]: numericValue });
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -144,7 +148,7 @@ const Index: FunctionComponent<IndexProps> = () => {
                     value={formData.category}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   >
-                    <option selected={true}>Select category</option>
+                    <option selected={true}>Seleccione Categoria</option>
                     <option value="TV">TV/Monitors</option>
                     <option value="PC">PC</option>
                     <option value="GA">Gaming/Console</option>
@@ -156,7 +160,7 @@ const Index: FunctionComponent<IndexProps> = () => {
                     htmlFor="description"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Description
+                    Descripcion
                   </label>
                   <textarea
                     onChange={handleInputChange}
@@ -191,6 +195,22 @@ const Index: FunctionComponent<IndexProps> = () => {
             </form>
           </div>
         </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        {products.map((product) => (
+          <div className="border-2 p-4 flex flex-col  border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-auto">
+            <img
+              src={placeholder}
+              alt="productImage"
+              className="size-32 border-dashed border-gray-400 border-2"
+            />
+            <span>Nombre: {product.name}</span>
+            <span>Categoria: {product.category}</span>
+            <span>Precio: ${product.price}</span>
+            <span>Cantidad: {product.quantity}</span>
+            <span>Descripcion: {product.description}</span>
+          </div>
+        ))}
       </div>
     </>
   );

@@ -1,12 +1,10 @@
 import { FunctionComponent } from "react";
 import { Outlet } from "react-router-dom";
 import DashboardLink from "../components/DashboardLink";
-import { useModalStore } from "../store/useStore";
 
 interface DashboardProps {}
 
 const Dashboard: FunctionComponent<DashboardProps> = () => {
-  const { products } = useModalStore();
   return (
     <>
       <div className="antialiased bg-gray-50 dark:bg-gray-900">
@@ -763,6 +761,27 @@ const Dashboard: FunctionComponent<DashboardProps> = () => {
                 linkLabel="Productos"
               />
               <DashboardLink
+                to="sales"
+                icon={
+                  <svg
+                    className="w-6 h-6 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 18 16"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M1 1v14h16M4 10l3-4 4 4 5-5m0 0h-3.207M16 5v3.207"
+                    />
+                  </svg>
+                }
+                linkLabel="Ventas"
+              />
+              <DashboardLink
                 to="help"
                 icon={
                   <svg
@@ -1028,22 +1047,6 @@ const Dashboard: FunctionComponent<DashboardProps> = () => {
 
         <main className="p-4 md:ml-64 h-auto pt-20">
           <Outlet />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-            {products.map((product) => (
-              <div className="border-2 p-2 flex flex-col border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-64">
-                <img
-                  src=""
-                  alt="productImage"
-                  className="size-32 border-dashed border-gray-400 border-2 pb-4"
-                />
-                <span>Nombre: {product.name}</span>
-                <span>Categoria: {product.category}</span>
-                <span>Precio: ${product.price}</span>
-                <span>Cantidad: {product.quantity}</span>
-                <span>Descripcion: {product.description}</span>
-              </div>
-            ))}
-          </div>
         </main>
       </div>
     </>
