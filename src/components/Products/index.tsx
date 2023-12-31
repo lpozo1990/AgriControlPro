@@ -1,10 +1,13 @@
-import { ChangeEvent, FormEvent, FunctionComponent } from "react";
+import { ChangeEvent, FormEvent, FunctionComponent, useEffect } from "react";
 import { useModalStore } from "../../store/useStore";
 import placeholder from "../../assets/placeholder-product.png";
 
 interface IndexProps {}
 
 const Index: FunctionComponent<IndexProps> = () => {
+  useEffect(() => {
+    (window as any).initFlowbite();
+  }, []);
   const { formData, setFormData, addProduct, products } = useModalStore();
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -49,6 +52,7 @@ const Index: FunctionComponent<IndexProps> = () => {
 
       <div
         id="productModal"
+        data-modal-backdrop="static"
         tabIndex={-1}
         aria-hidden="true"
         className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
