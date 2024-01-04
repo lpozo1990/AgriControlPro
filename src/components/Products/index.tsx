@@ -28,7 +28,6 @@ const Index: FunctionComponent<IndexProps> = () => {
     "Stock Actual",
   ];
 
-  const data = [["001", "Guayaba", "$12.00", "$15.00", "$10", "$5", "$5"]];
   const result = products.map((product) => [
     product.code,
     product.name,
@@ -77,7 +76,7 @@ const Index: FunctionComponent<IndexProps> = () => {
   return (
     <>
       <div className="flex justify-between items-center ">
-        <h1 className="text-2xl">Productos</h1>
+        <h1 className="text-2xl dark:text-white">Productos</h1>
         <div className="flex justify-center m-5">
           <button
             id="productModalButton"
