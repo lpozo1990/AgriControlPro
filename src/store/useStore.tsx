@@ -2,23 +2,19 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 interface ModalState {
-  formData: {
-    name: string;
-    price: number;
-    quantity: number;
-    category: string;
-    description: string;
-  };
+  codeCounter: number;
   products: Product[];
   sales: Sale[];
-  setFormData: (data: Partial<ModalState["formData"]>) => void;
   addProduct: (product: Product) => void;
+  incrementCodeCounter: () => void;
 }
 
 interface Product {
+  code: string;
   name: string;
-  price: number;
-  quantity: number;
+  purchasePrice: string;
+  sellingPrice: string;
+  quantity: string;
   category: string;
   description: string;
 }
@@ -31,47 +27,18 @@ interface Sale {
 
 export const useModalStore = create<ModalState>()(
   devtools((set) => ({
-    formData: {
-      name: "",
-      price: 0,
-      quantity: 0,
-      category: "",
-      description: "",
-    },
+    codeCounter: 1,
     products: [],
     sales: [],
-    setFormData: (data) =>
-      set((state) => ({ formData: { ...state.formData, ...data } })),
     addProduct: (product) =>
-      set((state) => {
-        // Verificar si el producto ya está en las ventas
-        const existingSaleIndex = state.sales.findIndex(
-          (sale) => sale.productName === product.name
-        );
-
-        if (existingSaleIndex !== -1) {
-          // Si el producto ya está en las ventas, actualizar la cantidad y el precio total
-          const updatedSales = [...state.sales];
-          updatedSales[existingSaleIndex].quantity += product.quantity;
-          updatedSales[existingSaleIndex].totalPrice +=
-            product.quantity * product.price;
-
-          return { products: [...state.products], sales: updatedSales };
-        } else {
-          // Si el producto no está en las ventas, agregarlo al array de productos
-          const updatedProducts = [...state.products, product];
-
-          // Calcular la venta y agregarla al array de ventas
-          const sale = {
-            productName: product.name,
-            quantity: product.quantity,
-            totalPrice: product.quantity * product.price,
-          };
-
-          const updatedSales = [...state.sales, sale];
-
-          return { products: updatedProducts, sales: updatedSales };
-        }
-      }),
+      set((state) => ({
+        codeCounter: state.codeCounter,
+        products: [
+          ...state.products,
+          { ...product, code: `00${state.codeCounter}` },
+        ],
+      })),
+    incrementCodeCounter: () =>
+      set((state) => ({ codeCounter: state.codeCounter + 1 })),
   }))
 );

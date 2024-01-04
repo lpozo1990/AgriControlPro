@@ -3,6 +3,7 @@ export default {
   content: [
     "./src/**/*.{html,js,jsx,ts,tsx}", // Include your React components
     "./public/index.html", // Include your HTML file
+    "node_modules/flowbite-react/lib/esm/**/*.js",
   ],
   theme: {
     extend: {
